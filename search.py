@@ -1,23 +1,24 @@
 #!/usr/bin/python3.4
 
+import os
 import re
-import itertools
+import itertools as it
 
 class fileReader:
 
-    def prepareFile(self,importedFile):
-    #Function which removes adjacent and non alphabetical characters
+    def readFile(self,filename):
+        return open(filename,'r').read().replace(os.linesep, ' ')
+
+    def prepareFile(self,filename):
+        remove_ch = 'AEIOUYHW'
         preparedFile = ''
-        for word in re.sub('[^a-zA-Z]+', ' ', importedFile).split():
-            preparedFile += ''.join(ch for ch, _ in itertools.groupby(word)) + ' '
+        for word in re.sub('[^a-zA-Z]+', ' ', filename).split():
+            word = (word[0] +
+                ''.join(ch for ch in word[1:] if ch.upper() not in remove_ch))
+            preparedFile += ''.join(ch for ch, _ in it.groupby(word)) + ' '
         return preparedFile
 
-    '''
-    def readSingleWord(importedFile):
-        for line in importedFile:
-            for word in line.split():
-                print(word)
-    '''
+
 
 #class soundComparer:
 
