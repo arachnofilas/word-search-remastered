@@ -7,9 +7,7 @@ class Validator:
 
     def ensureFileIsValid(self, filename):
         try:
-            if os.path.getsize(filename) > 0:
-
-            else:
+            if not os.path.getsize(filename) > 0:
                 print('Imported file is empty')
                 sys.exit(1)
         except IndexError:
