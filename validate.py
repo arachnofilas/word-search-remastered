@@ -10,7 +10,6 @@ class Validator:
             searchedFile = sys.argv[1]
             if os.path.getsize(searchedFile) > 0:
                 return open(searchedFile,'r').read().replace(os.linesep, ' ')
-                #Validator moved to validate.py and changed files size check
             else:
                 print('Imported file is empty')
                 sys.exit(1)
