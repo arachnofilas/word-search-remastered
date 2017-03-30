@@ -9,10 +9,16 @@ class fileReader:
     def readFile(self,filename):
         return open(filename,'r').read().replace(os.linesep, ' ')
 
+    def removeSymbols(self,filename):
+        newFile = ''
+        for word in re.sub('[^a-zA-Z]+', ' ', filename).split():
+            newFile += word + ' '
+        return newFile
+
     def prepareFile(self,filename):
         remove_ch = 'AEIOUYHW'
         preparedFile = ''
-        for word in re.sub('[^a-zA-Z]+', ' ', filename).split():
+        for word in filename.split():
             word = (word[0] +
                 ''.join(ch for ch in word[1:] if ch.upper() not in remove_ch))
             preparedFile += ''.join(ch for ch, _ in it.groupby(word)) + ' '
@@ -48,7 +54,20 @@ class fileReader:
                 code += character
         return code
 
-#class soundComparer:
+class soundComparer:
+
+    def isSimilar(self, codedWord, codedWordFromFile):
+        if codedWord == codedWordFromFile:
+            return True
+        elif codedWord[:-1] == codedWordFromFile[:-1]:
+            return True
+        elif codedWord[:-2] == codedWordFromFile[:-2]:
+            return True
+        elif codedWord[:-3] == codedWordFromFile[:-3]:
+            return True
+        else:
+            return False
+
 
 #class printer:
 
