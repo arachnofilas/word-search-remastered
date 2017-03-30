@@ -4,17 +4,35 @@ import sys
 import argparse
 from validate import Validator
 from search import fileReader
+from search import soundComparer
+from search import printer
+
+from difflib import SequenceMatcher
 
 class Boss:
 
     def __init__(self):
         self.validator = Validator()
         self.reader = fileReader()
+        self.comparer = soundComparer()
+        self.printer = printer()
 
-    def execute(self, filename, word):
+    def execute(self, filename, word, similarWords=[]):
         self.validator.ensureFileIsValid(filename)
-        myFile = self.reader.readFile(filename)
-        print(self.reader.prepareFile(myFile))
+        filename = self.reader.readFile(filename)
+        fileContent = self.reader.removeSymbols(filename)
+        preparedFile = self.reader.prepareFile(fileContent)
+        codedWord = self.reader.soundexCode(word)
+        for index, word in enumerate(preparedFile.split()):
+            codedWordFromFile = self.reader.soundexCode(word)
+            similar = self.comparer.isSimilar(codedWord,codedWordFromFile)
+            if similar:
+                wordInFile = fileContent.split()
+                if not similarWords:
+                    similarWords.append(wordInFile[index])
+                if wordInFile[index] not in similarWords:
+                    similarWords.append(wordInFile[index])
+        self.printer.printSimilar(similarWords)
 
 def main():
     parser = argparse.ArgumentParser(description='This CLI tool searches ' +
