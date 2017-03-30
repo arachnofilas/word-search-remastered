@@ -18,7 +18,35 @@ class fileReader:
             preparedFile += ''.join(ch for ch, _ in it.groupby(word)) + ' '
         return preparedFile
 
-
+    def soundexCode(self,word):
+        soundex = { 'BFPV': '1', 'CGJKQSXZ': '2', 'DT': '3',
+                    'L': '4', 'MN': '5', 'R': '6' }
+        newWord=''
+        code = ''
+        counter = 0
+        firstCharacter = word[0]
+        for character in word:
+            character = character.upper()
+            for key in soundex.keys():
+                if character in key:
+                    dictNumber = soundex[key]
+                    if not newWord:
+                        newWord += dictNumber
+                        break
+                    if dictNumber != newWord[-1]:
+                        newWord += dictNumber
+                else:
+                    counter += 1
+            if counter == 6:
+                if not newWord:
+                    newWord += character
+        newWord = newWord[:4].ljust(4, "0")
+        for character in newWord:
+            if len(code) < 1:
+                code += firstCharacter.upper()
+            else:
+                code += character
+        return code
 
 #class soundComparer:
 
