@@ -68,25 +68,7 @@ class soundComparer:
         else:
             return False
 
+class printer:
 
-#class printer:
-
-
-    '''
-    PUT INTO find.py ?????:
-
-
-    with open('wiki_lt.txt','r') as f:
-        for line in f:
-            for word in line.split():
-                print(word)
-
-        def clearRemovableLetters(wordList):
-            removable_letters = 'aeiouyhw'
-            newWordList = []
-            for word in wordList:
-                newWord = (word[0] +
-                    ''.join(ch for ch in word[1:] if ch not in removable_letters))
-                    newWordList.append(newWord)
-            return newWordList
-    '''
+    def printSimilar(self, content):
+        print(content)
