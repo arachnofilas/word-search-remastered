@@ -68,7 +68,21 @@ class soundComparer:
         else:
             return False
 
+class listCreator:
+
+    def appendSimilarList(self, index, similar, content, similarWords=[]):
+        if similar:
+            wordInFile = content.split()
+            if not similarWords:
+                similarWords.append(wordInFile[index])
+            if wordInFile[index] not in similarWords:
+                similarWords.append(wordInFile[index])
+        return similarWords
+
 class printer:
 
     def printSimilar(self, content):
-        print(content)
+        print('Similar words in unordered list are:')
+        for word in content:
+            if len(word) > 1:
+                print(word)

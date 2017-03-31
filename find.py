@@ -1,4 +1,4 @@
-#!/usr/bin/python3.4
+#!/usr/bin/python3
 
 import sys
 import argparse
@@ -6,7 +6,7 @@ from validate import Validator
 from search import fileReader
 from search import soundComparer
 from search import printer
-
+from search import listCreator
 from difflib import SequenceMatcher
 
 class Boss:
@@ -16,22 +16,18 @@ class Boss:
         self.reader = fileReader()
         self.comparer = soundComparer()
         self.printer = printer()
+        self.appender = listCreator()
 
-    def execute(self, filename, word, similarWords=[]):
+    def execute(self, filename, word):
         self.validator.ensureFileIsValid(filename)
         filename = self.reader.readFile(filename)
         fileContent = self.reader.removeSymbols(filename)
         preparedFile = self.reader.prepareFile(fileContent)
-        codedWord = self.reader.soundexCode(word)
+        codedSearchedWord = self.reader.soundexCode(word)
         for index, word in enumerate(preparedFile.split()):
             codedWordFromFile = self.reader.soundexCode(word)
-            similar = self.comparer.isSimilar(codedWord,codedWordFromFile)
-            if similar:
-                wordInFile = fileContent.split()
-                if not similarWords:
-                    similarWords.append(wordInFile[index])
-                if wordInFile[index] not in similarWords:
-                    similarWords.append(wordInFile[index])
+            similar = self.comparer.isSimilar(codedSearchedWord,codedWordFromFile)
+            similarWords = self.appender.appendSimilarList(index,similar,fileContent)
         self.printer.printSimilar(similarWords)
 
 def main():
