@@ -1,13 +1,13 @@
-#!/usr/bin/python3.4
+#!/usr/bin/python3
 
 import sys
 import os
 
 class Validator:
 
-    def ensureFileIsValid(self, filename):
+    def is_file_valid(self, filename):
         try:
-            if not os.path.getsize(filename) > 0:
+            if os.path.getsize(filename) <= 0:
                 print('Imported file is empty')
                 sys.exit(1)
         except IndexError:
