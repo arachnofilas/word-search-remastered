@@ -12,13 +12,13 @@ def main():
         'filename',
         metavar='filename',
         type=str,
-        help='file to be searched in'
+        help='Searching specified file'
         )
     parser.add_argument(
         'word',
         metavar='word',
         type=str,
-        help='word to search for'
+        help='Searching for specified word'
         )
     args = parser.parse_args()
     validator = Validator()

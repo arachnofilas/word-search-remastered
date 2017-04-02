@@ -3,6 +3,7 @@
 import os
 import re
 import itertools as it
+import time
 
 class FileReader:
 
@@ -65,8 +66,6 @@ class SoundComparer:
             return True
         elif coded_word[:-2] == coded_word_from_file[:-2]:
             return True
-        elif coded_word[:-3] == coded_word_from_file[:-3]:
-            return True
         else:
             return False
 
@@ -93,20 +92,27 @@ class Printer:
                 print(word)
 
 def initiate_search(filename, word):
-    reader = FileReader()
-    fixer = FileFixer()
-    comparer = SoundComparer()
-    appender = SimilarListBuilder()
-    printer = Printer()
-    filename = reader.read_file(filename)
-    file_content = reader.leave_only_alpha_characters(filename)
-    prepared_file = fixer.remove_letters(file_content)
-    coded_searched_word = fixer.transform_to_soundex(word)
-    for index, word in enumerate(prepared_file.split()):
-        coded_word_from_file = fixer.transform_to_soundex(word)
-        similar = comparer.is_similar(coded_searched_word, coded_word_from_file)
-        similar_words = appender.append_to_similar_list(index, similar, file_content)
-    printer.print_similar(similar_words)
-
+    #0.005 +- 0.0001 s without mp
+    #700kb file = 33.5 s without mp
+    try:
+        start_time = time.time()
+        reader = FileReader()
+        fixer = FileFixer()
+        comparer = SoundComparer()
+        appender = SimilarListBuilder()
+        printer = Printer()
+        filename = reader.read_file(filename)
+        file_content = reader.leave_only_alpha_characters(filename)
+        prepared_file = fixer.remove_letters(file_content)
+        coded_searched_word = fixer.transform_to_soundex(word)
+        for index, word in enumerate(prepared_file.split()):
+            coded_word_from_file = fixer.transform_to_soundex(word)
+            similar = comparer.is_similar(coded_searched_word, coded_word_from_file)
+            similar_words = appender.append_to_similar_list(index, similar, file_content)
+        printer.print_similar(similar_words)
+        print('----- %ss ------' % (time.time() - start_time))
+    except (KeyboardInterrupt, SystemExit):
+        print('')
+        print('Program has been terminated by the user')
 if __name__ == '__main__':
     initiate_search()
