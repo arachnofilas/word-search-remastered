@@ -30,4 +30,4 @@ More information can be found via help:
 
 ## Authors
 
-* **Dziugas Mikalkenas** - [arachnofilas](https://github.com/arachnofilas)
+* [mikaydzi](https://github.com/mikaydzi)
